@@ -228,9 +228,9 @@ var _ = { };
         return false;
       } else {
         if (iterator) {
-          return Boolean(iterator(element)); //handles callback
+          return Boolean(iterator(element));
         } else {
-          return Boolean(element); //works when no callback is provided
+          return Boolean(element);
         }
       }
     }, true);
@@ -441,34 +441,11 @@ var _ = { };
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
-    var flat = [];
-    var inner;
-    if (result) {
-      _.each(nestedArray, function (element) {
-        if (Array.isArray(element)) {
-          _.each(element, function (value) {
-            flat.push(value);
-          });
-        } else {
-          flat.push(element);
-        }
-      });
-    } else {
-      _.each(nestedArray, function (elements) {
-        if (!Array.isArray(elements)) {
-          flat.push(elements);
-        } else if (elements.length === 1) {
-          inner = elements;
-          while (typeof inner == 'object') {
-            inner = elements[0]
-          }
-          flat.push(inner);
-        } else {
-          // apply recursion here ->
-        }
-      });
-    }
-    return flat;
+    var flattened = [];
+    var temp = nestedArray;
+    _.each(temp, function (nested) {
+    	
+    });
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
