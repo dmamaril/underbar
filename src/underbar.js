@@ -442,10 +442,17 @@ var _ = { };
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
     var flattened = [];
-    var temp = nestedArray;
-    _.each(temp, function (nested) {
-    	
-    });
+    var temp;
+    if (result) {
+      _.each(nestedArray, function (nested) {
+        if (!Array.isArray(nested)) {
+          flattened.push(nested);
+        } else {
+          flattened.push(_.flatten(nested, result));
+        }
+      });
+      return flattened;
+    }
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
@@ -485,7 +492,26 @@ var _ = { };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
+  // init = [1,2,3] && [1,2,3,4];
   _.difference = function(array) {
+    var result = [];
+    var temp = [];
+    var init = arguments[0];
+    var params = Array.prototype.slice.call(arguments, 1);
+    _.each(params, function (arrays) {
+      _.each(arrays, function (value) {
+        if (init.indexOf(value) !== -1) {
+          temp.push(value);
+        }
+      })    
+    });
+
+    _.each(init, function (element) {
+      if (temp.indexOf(element) === -1) {
+        result.push(element);
+      }
+    })
+    return result;
   };
 
 
