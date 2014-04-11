@@ -37,7 +37,7 @@ var _ = { };
     } else if (n === undefined) {
       return array.pop();
     } else {
-      return array.slice(last-n, last);
+      return array.slice(last-n);
     }
   };
 
@@ -66,7 +66,7 @@ var _ = { };
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
-    _.each(array, function(item, index) { 
+    _.each(array, function(item, index) {
     // where item == element / collection[i] & index = i in _.each
       if (item === target && result === -1) {
         result = index;
@@ -83,10 +83,10 @@ var _ = { };
       if (test(element)) {
         result.push(element);
       }
-    });    
+    });
     return result;
   };
-  
+
   // use _.reduce to push all arrays that pass a truth test
   // reduce(collection, func, []);
   */
@@ -100,7 +100,7 @@ var _ = { };
     }, [])
   };
 
- 
+
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
@@ -112,7 +112,7 @@ var _ = { };
   };
 
   // Produce a duplicate-free version of the array.
-  // array.indexOf(element) == -1 
+  // array.indexOf(element) == -1
   /*
   _.uniq = function(array) {
     var result = [];
@@ -124,7 +124,7 @@ var _ = { };
     return result;
   };
   */
-  
+
   _.uniq = function (array) {
     return _.reduce(array, function(memory, element) {
       if(memory.indexOf(element) == -1) {
@@ -177,13 +177,13 @@ var _ = { };
   _.invoke = function(collection, functionOrKey, args) { // where args is an optional single array [args] parameter
     return _.map(collection, function(element) {
       if (typeof(functionOrKey) == "string") {
-        return element[functionOrKey].apply(element, args); //comprehend pls
+        return element[functionOrKey].apply(element, args);
       } else {
         return functionOrKey.apply(element, args);
       }
     });
   };
-  
+
   // Reduces an array or object to a single value by repetitively calling
   // iterator(previousValue, item) for each item. previousValue should be
   // the return value of the previous iterator call.
@@ -208,32 +208,32 @@ var _ = { };
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
-    return _.reduce(collection, function(wasFound, item) { 
+    return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
       }
       return item === target;
-    }, false); 
+    }, false);
   };
 
 
   // Determine whether all of the elements match a truth test.
-  // TIP: Try re-using reduce() here.   
+  // TIP: Try re-using reduce() here.
   // _.identity: Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.every = function(collection, iterator) {
     return _.reduce(collection, function(memory, element) {
-      if (memory === false) { 
+      if (memory === false) {
         return false;
       } else {
-        if (iterator) { 
+        if (iterator) {
           return Boolean(iterator(element)); //handles callback
         } else {
           return Boolean(element); //works when no callback is provided
         }
       }
-    }, true); 
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -337,10 +337,16 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var memoized = {};
     var result;
-    return function () {
-      result = func.apply(this, arguments);
-      return result;
+    return function (args) {
+      if (memoized[arguments[0]] === undefined) {
+        result = func.apply(this, arguments);
+        memoized[arguments] = result;
+        return result;
+      } else {
+        return memoized[arguments]
+      }
     }
   };
 
@@ -409,7 +415,7 @@ var _ = { };
         largest = element.length;
       }
     });
-    // template of undefined result 
+    // template of undefined result
     for (var i = 0 ; i < largest ; i++) {
       var sample = [];
       for (var j = 0 ; j < params.length ; j++) {
@@ -448,19 +454,19 @@ var _ = { };
         }
       });
     } else {
-      _.each(nestedArray, function (elements) {     
+      _.each(nestedArray, function (elements) {
         if (!Array.isArray(elements)) {
-          flat.push(elements); 
+          flat.push(elements);
         } else if (elements.length === 1) {
-          inner = elements; 
+          inner = elements;
           while (typeof inner == 'object') {
-            inner = elements[0] 
+            inner = elements[0]
           }
           flat.push(inner);
         } else {
           // apply recursion here ->
         }
-      }); 
+      });
     }
     return flat;
   };
@@ -476,7 +482,7 @@ var _ = { };
     var holder = 0;
 
     _.each(arguments[0], function (value) {
-      init.push(value); 
+      init.push(value);
     });
     _.each(params, function (element) {
       _.each(element, function (val) {
@@ -485,14 +491,14 @@ var _ = { };
         }
       });
     });
-    _.each(hold, function (elements) { 
-      _.each(hold, function (testEach) { 
-        if (elements === testEach) { 
-          holder++; 
+    _.each(hold, function (elements) {
+      _.each(hold, function (testEach) {
+        if (elements === testEach) {
+          holder++;
         };
-        if (holder > counter) { 
-          counter = holder 
-          holder = 0;    
+        if (holder > counter) {
+          counter = holder
+          holder = 0;
           result = new Array(testEach);
         }
       });
